@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sportline El Salvador | Pruébate Zapatos en AR</title>
+    <meta name="description" content="La primera tienda deportiva en El Salvador con tecnología AR. Pruébate zapatos antes de comprar.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=1920&h=1080&fit=crop&q=80') center/cover;
+            opacity: 0.15;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            padding: 40px 20px;
+            max-width: 1000px;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(0,255,136,0.3)); }
+            to { filter: drop-shadow(0 0 40px rgba(0,255,136,0.6)); }
+        }
+
+        .tagline {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: #000;
+            padding: 25px 60px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            box-shadow: 0 20px 60px rgba(0,255,136,0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(0,255,136,0.6);
+        }
+
+        .ar-badge {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .products-section {
+            padding: 100px 20px;
+            background: #0a0a0a;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 1.2rem;
+            margin-bottom: 60px;
+        }
+
+        .products-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background: #1a1a1a;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s;
+            border: 1px solid #2a2a2a;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            border-color: #00ff88;
+            box-shadow: 0 30px 60px rgba(0,255,136,0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            background: #111;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .ar-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 900;
+            font-size: 0.9rem;
+            z-index: 1;
+        }
+
+        .product-info {
+            padding: 30px;
+        }
+
+        .product-brand {
+            color: #00ff88;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .try-ar-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .try-ar-btn:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .features {
+            padding: 100px 20px;
+            background: #000;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 60px auto 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .feature:hover {
+            background: rgba(0,255,136,0.1);
+            border-color: #00ff88;
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .feature-desc {
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #000;
+            padding: 60px 20px 30px;
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-info {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .footer-info p {
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .tagline { font-size: 1.5rem; }
+            .cta-button { padding: 20px 40px; font-size: 1.2rem; }
+            .section-title { font-size: 2rem; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating { animation: float 3s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="logo floating">⚡ SPORTLINE</div>
+            <div class="tagline">Pruébate Zapatos en Realidad Aumentada</div>
+            <div class="subtitle">
+                Tecnología AR revolucionaria. Ve cómo te quedan los zapatos<br>
+                ANTES de comprar. Sin salir de casa. Sin apps.
+            </div>
+            
+            <a href="https://wanna.fashion/footwear" target="_blank" class="cta-button">
+                🚀 PROBAR AHORA EN AR
+            </a>
+            
+            <div class="ar-badge">
+                ✨ Powered by Wanna Fashion | Primera Tienda AR en El Salvador
+            </div>
+        </div>
+    </section>
+
+    <section class="products-section">
+        <h2 class="section-title">Colección Disponible</h2>
+        <p class="section-subtitle">Todos los modelos disponibles en AR - Pruébalos ahora</p>
+
+        <div class="products-grid">
+            <div class="product-card" onclick="goToAR()">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop&q=90" alt="Nike Air Max">
+                    <span class="ar-tag">🥽 AR READY</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Nike</div>
+                    <div class="product-name">Air Max DN 2024</div>
+                    <div class="product-price">$170.00</div>
+                    <button class="try-ar-btn">👟 Pruébate en AR</button>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="goToAR()">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&h=800&fit=crop&q=90" alt="Adidas Ultraboost">
+                    <span class="ar-tag">🥽 AR READY</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Adidas</div>
+                    <div class="product-name">Ultraboost Light</div>
+                    <div class="product-price">$180.00</div>
+                    <button class="try-ar-btn">👟 Pruébate en AR</button>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="goToAR()">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?w=800&h=800&fit=crop&q=90" alt="Air Jordan 1">
+                    <span class="ar-tag">🥽 AR READY</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Air Jordan</div>
+                    <div class="product-name">Jordan 1 High Retro</div>
+                    <div class="product-price">$160.00</div>
+                    <button class="try-ar-btn">👟 Pruébate en AR</button>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="goToAR()">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?w=800&h=800&fit=crop&q=90" alt="Puma">
+                    <span class="ar-tag">🥽 AR READY</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Puma</div>
+                    <div class="product-name">RS-X Efekt</div>
+                    <div class="product-price">$110.00</div>
+                    <button class="try-ar-btn">👟 Pruébate en AR</button>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="goToAR()">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&h=800&fit=crop&q=90" alt="New Balance">
+                    <span class="ar-tag">🥽 AR READY</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Balance</div>
+                    <div class="product-name">990v6 Made in USA</div>
+                    <div class="product-price">$185.00</div>
+                    <button class="try-ar-btn">👟 Pruébate en AR</button>
+                </div>
+            </div>
+
+            <div class="product-card" onclick="goToAR()">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=800&h=800&fit=crop&q=90" alt="Converse">
+                    <span class="ar-tag">🥽 AR READY</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Converse</div>
+                    <div class="product-name">Chuck 70 High Top</div>
+                    <div class="product-price">$85.00</div>
+                    <button class="try-ar-btn">👟 Pruébate en AR</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">¿Por Qué Usar AR?</h2>
+        <p class="section-subtitle">La tecnología que revoluciona el shopping online</p>
+
+        <div class="features-grid">
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">100% Online</div>
+                <div class="feature-desc">Sin necesidad de ir a la tienda. Pruébate desde cualquier lugar con tu celular.</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <div class="feature-title">IA Avanzada</div>
+                <div class="feature-desc">Tecnología de Wanna Fashion usada por Nike, Adidas y las mejores marcas.</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Instantáneo</div>
+                <div class="feature-desc">Ve resultados en tiempo real. Sin esperas, sin complicaciones, sin descargas.</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✅</div>
+                <div class="feature-title">Compra Segura</div>
+                <div class="feature-desc">Reduce errores en la compra hasta 40%. Menos devoluciones, más aciertos.</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">Ahorra Tiempo</div>
+                <div class="feature-desc">No pierdas tiempo probándote en tienda. Hazlo desde tu casa en segundos.</div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🇸🇻</div>
+                <div class="feature-title">El Salvador</div>
+                <div class="feature-desc">Primera tienda deportiva con AR en Centroamérica. Innovación salvadoreña.</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">⚡ SPORTLINE</div>
+        <div class="footer-info">
+            <p><strong>Sportline El Salvador</strong></p>
+            <p>📍 San Salvador, El Salvador</p>
+            <p>📞 +503 2222-3333</p>
+            <p>📧 info@sportline-sv.com</p>
+            <p>🕐 Lun-Sáb: 9AM - 7PM | Dom: 10AM - 6PM</p>
+        </div>
+        <div style="color: #444; margin-top: 30px; padding-top: 30px; border-top: 1px solid #1a1a1a;">
+            <p>© 2024 Sportline El Salvador. Todos los derechos reservados.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                Desarrollado por Jorge Echeverria & Team | AR powered by <a href="https://wanna.fashion" style="color: #00ff88; text-decoration: none;" target="_blank">Wanna Fashion</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function goToAR() {
+            window.open('https://wanna.fashion/footwear', '_blank');
+        }
+        console.log('%c⚡ SPORTLINE EL SALVADOR', 'font-size: 24px; font-weight: bold; color: #00ff88;');
+        console.log('AR Platform: https://wanna.fashion/footwear');
+        console.log('Developer: Jorge Echeverria & Team');
+    </script>
+</body>
+</html>
